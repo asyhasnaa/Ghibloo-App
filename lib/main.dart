@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ghibloo_app/screens/home_screen.dart';
 import 'package:ghibloo_app/screens/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.lato().fontFamily,
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const HomeScreen(),
     );
   }
 }

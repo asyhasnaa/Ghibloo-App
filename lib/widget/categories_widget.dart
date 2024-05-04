@@ -23,11 +23,12 @@ class Categories extends StatelessWidget {
                   : Colors.grey[200],
               borderRadius: BorderRadius.circular(20),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 3),
             margin: const EdgeInsets.only(right: 10),
             child: Text(
               categories[index],
               style: TextStyle(
+                fontSize: 16,
                 color: currentCategories == categories[index]
                     ? Colors.white
                     : Colors.grey,

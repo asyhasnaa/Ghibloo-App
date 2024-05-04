@@ -20,6 +20,7 @@ class FilmModel {
   List<String> locations;
   List<String> vehicles;
   String url;
+  bool isSaved;
 
   FilmModel({
     required this.id,
@@ -39,6 +40,7 @@ class FilmModel {
     required this.locations,
     required this.vehicles,
     required this.url,
+    required this.isSaved,
   });
 
   FilmModel copyWith({
@@ -79,6 +81,7 @@ class FilmModel {
         locations: locations ?? this.locations,
         vehicles: vehicles ?? this.vehicles,
         url: url ?? this.url,
+        isSaved: isSaved,
       );
 
   factory FilmModel.fromRawJson(String str) =>
@@ -104,6 +107,7 @@ class FilmModel {
         locations: List<String>.from(json["locations"].map((x) => x)),
         vehicles: List<String>.from(json["vehicles"].map((x) => x)),
         url: json["url"],
+        isSaved: true,
       );
 
   Map<String, dynamic> toJson() => {

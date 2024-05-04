@@ -10,9 +10,9 @@ class BookmarkScreen extends StatefulWidget {
 class _BookmarkScreenState extends State<BookmarkScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
-        child: const Text("Bookmark Screen"),
+        child: Text("Bookmark Screen"),
       ),
     );
   }

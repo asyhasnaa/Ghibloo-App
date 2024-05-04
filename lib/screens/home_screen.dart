@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ghibloo_app/models/films_model.dart';
+import 'package:ghibloo_app/screens/detail_film_screen.dart';
 import 'package:ghibloo_app/screens/search_screen.dart';
 import 'package:ghibloo_app/services/api_service.dart';
 import 'package:ghibloo_app/widget/categories_widget.dart';
@@ -28,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Image.asset(
-            "logo.png",
+            "assets/logo.png",
             width: 100,
           ),
           actions: [
@@ -70,12 +71,12 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Container(
                   width: double.infinity,
-                  height: 250,
+                  height: 180,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     image: const DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage("banner.jpg"),
+                      image: AssetImage("assets/banner.jpg"),
                     ),
                   ),
                 ),
@@ -83,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 const Text(
                   "Categories",
                   style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -99,13 +100,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SearchScreen())),
                       child: const Text("View all"),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 5,
                 ),
                 FutureBuilder<List<FilmModel>>(
                     future: _filmsFuture,
@@ -125,32 +129,113 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             children: List.generate(
                                 films.length,
-                                (index) => Container(
-                                      margin: const EdgeInsets.only(right: 10),
-                                      width: 200,
-                                      child: Stack(
-                                        children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: double.infinity,
-                                                height: 250,
-                                                decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(15),
-                                                  image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: NetworkImage(
-                                                      films[index].image,
+                                (index) => GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailFilmScreen(
+                                                      filmId: '',
+                                                    )));
+                                      },
+                                      child: Container(
+                                        margin:
+                                            const EdgeInsets.only(right: 10),
+                                        width: 150,
+                                        child: Stack(
+                                          children: [
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: double.infinity,
+                                                  height: 200,
+                                                  decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                    image: DecorationImage(
+                                                      fit: BoxFit.cover,
+                                                      image: NetworkImage(
+                                                        films[index].image,
+                                                      ),
                                                     ),
                                                   ),
                                                 ),
-                                              )
-                                            ],
-                                          )
-                                        ],
+                                                const SizedBox(height: 10),
+                                                Text(
+                                                  films[index].title,
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Text(
+                                                  films[index].originalTitle,
+                                                  style: const TextStyle(
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w300),
+                                                ),
+                                                const SizedBox(height: 5),
+                                                Row(
+                                                  children: [
+                                                    const Icon(
+                                                      Icons.star_outlined,
+                                                      size: 20,
+                                                      color: Colors.yellow,
+                                                    ),
+                                                    Text(
+                                                      films[index].rtScore,
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          color: Colors.grey),
+                                                    ),
+                                                    const Text(
+                                                      "    ~   ",
+                                                      style: TextStyle(
+                                                          color: Colors.grey),
+                                                    ),
+                                                    const Icon(
+                                                      Icons
+                                                          .calendar_today_sharp,
+                                                      size: 15,
+                                                      color: Colors.yellow,
+                                                    ),
+                                                    Text(
+                                                      films[index].releaseDate,
+                                                      style: const TextStyle(
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w300,
+                                                          color: Colors.grey),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                            Positioned(
+                                              top: 1,
+                                              right: 11,
+                                              child: IconButton(
+                                                onPressed: () {},
+                                                style: IconButton.styleFrom(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    fixedSize:
+                                                        const Size(40, 40)),
+                                                iconSize: 20,
+                                                icon: const Icon(Icons
+                                                    .bookmark_border_rounded),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     )),
                           ),
