@@ -107,7 +107,7 @@ class FilmModel {
         locations: List<String>.from(json["locations"].map((x) => x)),
         vehicles: List<String>.from(json["vehicles"].map((x) => x)),
         url: json["url"],
-        isSaved: true,
+        isSaved: false,
       );
 
   Map<String, dynamic> toJson() => {

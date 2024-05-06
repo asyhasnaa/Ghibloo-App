@@ -1,59 +1,122 @@
 import 'package:flutter/material.dart';
+import 'package:ghibloo_app/constants/color.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:ghibloo_app/screens/bookmark_screen.dart';
 import 'package:ghibloo_app/screens/home_screen.dart';
 import 'package:ghibloo_app/screens/search_screen.dart';
 import 'package:ghibloo_app/screens/setting_screen.dart';
 
-class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+class BottomNavBarScreen extends StatefulWidget {
+  const BottomNavBarScreen({super.key});
 
   @override
-  State<BottomNavBar> createState() => _BottomNavBarState();
+  State<BottomNavBarScreen> createState() => _BottomNavBarScreenState();
 }
 
-class _BottomNavBarState extends State<BottomNavBar> {
-  int _selectedIndex = 0;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 25, fontWeight: FontWeight.bold);
-  static const List<Widget> _widgetOptions = <Widget>[
+class _BottomNavBarScreenState extends State<BottomNavBarScreen> {
+  int currentTab = 0;
+  List screens = const [
     HomeScreen(),
-    BookmarkScreen(),
     SearchScreen(),
+    BookmarkScreen(),
     SettingScreen(),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.white,
+        height: 70,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () => setState(() {
+                currentTab = 0;
+              }),
+              child: Column(
+                children: [
+                  Icon(
+                    currentTab == 0 ? Iconsax.home5 : Iconsax.home,
+                    color: currentTab == 0 ? kprimaryColor : Colors.grey,
+                  ),
+                  Text(
+                    "Home",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: currentTab == 0 ? kprimaryColor : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.bookmark),
-              label: 'Bookmark',
+            GestureDetector(
+              onTap: () => setState(() {
+                currentTab = 1;
+              }),
+              child: Column(
+                children: [
+                  Icon(
+                    currentTab == 1
+                        ? Iconsax.search_favorite5
+                        : Iconsax.search_favorite,
+                    color: currentTab == 1 ? kprimaryColor : Colors.grey,
+                  ),
+                  Text(
+                    "Search",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: currentTab == 1 ? kprimaryColor : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.search),
-              label: 'Search',
+            GestureDetector(
+              onTap: () => setState(() {
+                currentTab = 2;
+              }),
+              child: Column(
+                children: [
+                  Icon(
+                    currentTab == 2 ? Iconsax.bookmark5 : Iconsax.bookmark,
+                    color: currentTab == 2 ? kprimaryColor : Colors.grey,
+                  ),
+                  Text(
+                    "Bookmark",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: currentTab == 2 ? kprimaryColor : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.settings),
-              label: 'Setting',
+            GestureDetector(
+              onTap: () => setState(() {
+                currentTab = 3;
+              }),
+              child: Column(
+                children: [
+                  Icon(
+                    currentTab == 3 ? Iconsax.setting5 : Iconsax.setting,
+                    color: currentTab == 3 ? kprimaryColor : Colors.grey,
+                  ),
+                  Text(
+                    "Settings",
+                    style: TextStyle(
+                      fontSize: 14,
+                      color: currentTab == 3 ? kprimaryColor : Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.green,
-          unselectedItemColor: Colors.grey,
-          onTap: _onItemTapped),
+        ),
+      ),
+      body: screens[currentTab],
     );
   }
 }

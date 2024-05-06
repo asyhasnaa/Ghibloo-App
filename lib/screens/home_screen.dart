@@ -6,7 +6,7 @@ import 'package:ghibloo_app/services/api_service.dart';
 import 'package:ghibloo_app/widget/categories_widget.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -65,13 +65,13 @@ class _HomeScreenState extends State<HomeScreen> {
         body: SafeArea(
             child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(15),
+            padding: const EdgeInsets.only(right: 15, left: 15, top: 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Container(
                   width: double.infinity,
-                  height: 180,
+                  height: 190,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
                     image: const DecorationImage(
@@ -109,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ],
                 ),
                 const SizedBox(
-                  height: 5,
+                  height: 10,
                 ),
                 FutureBuilder<List<FilmModel>>(
                     future: _filmsFuture,
@@ -136,8 +136,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailFilmScreen(
-                                                      filmId: '',
-                                                    )));
+                                                        filmId:
+                                                            films[index].id)));
                                       },
                                       child: Container(
                                         margin:
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 Text(
                                                   films[index].title,
                                                   style: const TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
@@ -181,59 +181,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                                           FontWeight.w300),
                                                 ),
                                                 const SizedBox(height: 5),
-                                                Row(
-                                                  children: [
-                                                    const Icon(
-                                                      Icons.star_outlined,
-                                                      size: 20,
-                                                      color: Colors.yellow,
-                                                    ),
-                                                    Text(
-                                                      films[index].rtScore,
-                                                      style: const TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w300,
-                                                          color: Colors.grey),
-                                                    ),
-                                                    const Text(
-                                                      "    ~   ",
-                                                      style: TextStyle(
-                                                          color: Colors.grey),
-                                                    ),
-                                                    const Icon(
-                                                      Icons
-                                                          .calendar_today_sharp,
-                                                      size: 15,
-                                                      color: Colors.yellow,
-                                                    ),
-                                                    Text(
-                                                      films[index].releaseDate,
-                                                      style: const TextStyle(
-                                                          fontSize: 12,
-                                                          fontWeight:
-                                                              FontWeight.w300,
-                                                          color: Colors.grey),
-                                                    ),
-                                                  ],
-                                                ),
                                               ],
                                             ),
-                                            Positioned(
-                                              top: 1,
-                                              right: 11,
-                                              child: IconButton(
-                                                onPressed: () {},
-                                                style: IconButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    fixedSize:
-                                                        const Size(40, 40)),
-                                                iconSize: 20,
-                                                icon: const Icon(Icons
-                                                    .bookmark_border_rounded),
-                                              ),
-                                            )
                                           ],
                                         ),
                                       ),

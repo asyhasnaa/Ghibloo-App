@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:ghibloo_app/widget/search_appbar_widget.dart';
 import 'package:ghibloo_app/models/films_model.dart';
 import 'package:ghibloo_app/services/api_service.dart';
 import 'package:ghibloo_app/widget/film_card_widget.dart';
 import 'package:ghibloo_app/widget/search_appbar_widget.dart';
+import 'package:iconsax/iconsax.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -31,7 +34,22 @@ class _SearchScreenState extends State<SearchScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SearchAppbar(),
+            Container(
+              width: double.infinity,
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Colors.grey.withOpacity(0.5))),
+            ),
+            Row(
+              children: [
+                const Icon(Iconsax.search_normal, color: Colors.green),
+                const SizedBox(
+                  width: 50,
+                )
+              ],
+            ),
             FutureBuilder<List<FilmModel>>(
                 future: _filmsFuture,
                 builder: (context, snapshot) {
@@ -48,18 +66,21 @@ class _SearchScreenState extends State<SearchScreen> {
                           const SizedBox(
                             height: 10,
                           ),
-                          GridView.builder(
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10),
-                              itemBuilder: (context, index) => FilmCardWidget(
-                                    film: films[index],
-                                  ),
-                              itemCount: films.length),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) => FilmCardWidget(
+                              film: films[index],
+                            ),
+                            itemCount: films.length,
+                            separatorBuilder:
+                                (BuildContext context, int index) {
+                              // Add your code here
+                              return SizedBox(
+                                height: 15,
+                              ); // Replace Container() with your desired widget
+                            },
+                          ),
                         ],
                       ),
                     );
