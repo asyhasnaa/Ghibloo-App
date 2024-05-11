@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ghibloo_app/models/films_model.dart';
+import 'package:ghibloo_app/providers/bookmark.provider.dart';
 import 'package:ghibloo_app/screens/detail_film_screen.dart';
 import 'package:ghibloo_app/services/utils.dart';
+import 'package:provider/provider.dart';
 
 class FilmCardWidget extends StatefulWidget {
   const FilmCardWidget({
@@ -22,18 +24,23 @@ class _FilmCardWidgetState extends State<FilmCardWidget> {
   @override
   void initState() {
     super.initState();
-    isSaved = widget.film.isSaved;
+    final bookmarkProvider =
+        Provider.of<BookmarkProvider>(context, listen: false);
+    isSaved = bookmarkProvider.bookmarkedFilmIds.contains(widget.film.id);
   }
 
   void _toggleBookmark() async {
+    final bookmarkProvider =
+        Provider.of<BookmarkProvider>(context, listen: false);
     setState(() {
       isSaved = !isSaved;
-      widget.film.isSaved = isSaved;
     });
     if (isSaved) {
       await FilmStorage.saveBookmark(widget.film.id);
+      bookmarkProvider.fetchBookmarkedFilmIds();
     } else {
       await FilmStorage.removeBookmark(widget.film.id);
+      bookmarkProvider.fetchBookmarkedFilmIds();
     }
   }
 
@@ -97,7 +104,7 @@ class _FilmCardWidgetState extends State<FilmCardWidget> {
               child: IconButton(
                 onPressed: _toggleBookmark,
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(153, 255, 255, 255),
                   fixedSize: const Size(40, 40),
                 ),
                 iconSize: 20,

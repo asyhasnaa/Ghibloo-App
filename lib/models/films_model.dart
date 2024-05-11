@@ -40,7 +40,7 @@ class FilmModel {
     required this.locations,
     required this.vehicles,
     required this.url,
-    required this.isSaved,
+    this.isSaved = false,
   });
 
   FilmModel copyWith({

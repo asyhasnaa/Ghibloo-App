@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:ghibloo_app/widget/search_appbar_widget.dart';
 import 'package:ghibloo_app/models/films_model.dart';
 import 'package:ghibloo_app/services/api_service.dart';
+import 'package:ghibloo_app/theme.dart';
 import 'package:ghibloo_app/widget/film_card_widget.dart';
-import 'package:ghibloo_app/widget/search_appbar_widget.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -18,77 +17,109 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   ApiService apiService = ApiService();
   late Future<List<FilmModel>> _filmsFuture;
+  final List<FilmModel> _films = [];
+  List<FilmModel> _searchResult = [];
+  final TextEditingController _searchController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
     apiService = ApiService();
-    _filmsFuture = apiService.getFilms();
+    _filmsFuture = apiService.getFilms().then((films) {
+      _films.addAll(films);
+      return _films;
+    });
   }
 
+  void onSearch(String text) {
+    if (text.isEmpty) {
+      setState(() {
+        _searchResult = List.from(_films);
+      });
+      return;
+    }
+    setState(() {
+      _searchResult = _films
+          .where(
+              (film) => film.title.toLowerCase().contains(text.toLowerCase()))
+          .toList();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-            child: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(15),
+      body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: double.infinity,
-              height: 50,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
-                  border: Border.all(color: Colors.grey.withOpacity(0.5))),
+            Padding(
+              padding: const EdgeInsets.all(15),
+              child: Card(
+                child: ListTile(
+                  title: TextField(
+                    controller: _searchController,
+                    onChanged: onSearch,
+                    decoration: InputDecoration(
+                      hintText: "Search",
+                      prefixIcon: const Icon(Iconsax.search_favorite),
+                      suffixIcon: IconButton(
+                        icon: const Icon(
+                          Iconsax.close_square,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          _searchController.clear();
+                          onSearch("");
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
             ),
-            Row(
-              children: [
-                const Icon(Iconsax.search_normal, color: Colors.green),
-                const SizedBox(
-                  width: 50,
-                )
-              ],
-            ),
-            FutureBuilder<List<FilmModel>>(
+            const SizedBox(height: 10),
+            Expanded(
+              child: FutureBuilder<List<FilmModel>>(
                 future: _filmsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   } else if (snapshot.hasError) {
-                    return Text("Error: ${snapshot.error}");
+                    return Center(
+                      child: Text("Error: ${snapshot.error}"),
+                    );
                   } else {
-                    List<FilmModel> films = snapshot.data!;
-                    return SingleChildScrollView(
-                      scrollDirection: Axis.vertical,
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 10,
+                    final filmsToShow = _searchResult.isNotEmpty
+                        ? _searchResult
+                        : snapshot.data!;
+
+                    return ListView.separated(
+                      itemCount: filmsToShow.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 5),
+                          child: FilmCardWidget(
+                            film: filmsToShow[index],
                           ),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) => FilmCardWidget(
-                              film: films[index],
-                            ),
-                            itemCount: films.length,
-                            separatorBuilder:
-                                (BuildContext context, int index) {
-                              // Add your code here
-                              return SizedBox(
-                                height: 15,
-                              ); // Replace Container() with your desired widget
-                            },
-                          ),
-                        ],
-                      ),
+                        );
+                      },
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(height: 10),
                     );
                   }
-                })
+                },
+              ),
+            ),
           ],
         ),
       ),
-    )));
+    );
   }
 }
