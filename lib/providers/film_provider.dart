@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ghibloo_app/models/films_model.dart';
+import 'package:ghibloo_app/models/film_model.dart';
 import 'package:ghibloo_app/services/api_service.dart';
 
 class FilmProvider extends ChangeNotifier {
