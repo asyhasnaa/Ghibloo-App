@@ -3,7 +3,7 @@
 
 Welcome to Ghibloo, the ultimate app for Studio Ghibli fans! Whether you're a long-time admirer or new to the magical world of Studio Ghibli, Ghibloo provides you with a seamless way to explore and appreciate the artistry behind these timeless animated masterpieces.
 
-![Preview Application ](https://github.com/asyhasnaa/educode-app/blob/efc03fa2722a367967a961bff9ba324d395b3511/assets/images/preview%20app.png](https://github.com/asyhasnaa/Ghibloo-App/blob/f70100373a117a5ae146dbc82a764c2fd5df0b0b/assets/images/Ghibloo%20%20-%20MiniProject.png)
+![Preview Application ](https://github.com/asyhasnaa/Ghibloo-App/blob/f70100373a117a5ae146dbc82a764c2fd5df0b0b/assets/images/Ghibloo%20%20-%20MiniProject.png)
 
 ## About Ghibloo
 
